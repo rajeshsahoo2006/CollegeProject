@@ -1,0 +1,7 @@
+# Requirements for Convolution Assignment (Generative Deep Learning 2nd Ed)
+# Based on: https://github.com/davidADSP/Generative_Deep_Learning_2nd_Edition
+
+numpy>=1.21.0
+matplotlib>=3.5.0
+scikit-image>=0.19.0
+tensorflow>=2.10.0
