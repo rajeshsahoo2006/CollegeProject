@@ -1,6 +1,10 @@
 """
 Assignment 4: LSTM Text Generation on Epicurious Recipes Dataset
 ================================================================
+Author: Rajesh Sahoo
+Course: Neural Networks and Deep Learning
+University: University of the Cumberlands
+
 Based on: https://github.com/davidADSP/Generative_Deep_Learning_2nd_Edition/blob/main/notebooks/05_autoregressive/01_lstm/lstm.ipynb
 
 Steps:

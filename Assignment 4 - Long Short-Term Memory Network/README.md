@@ -1,5 +1,9 @@
 # Assignment 4: Long Short-Term Memory Network
 
+**Author:** Rajesh Sahoo
+**University:** University of the Cumberlands
+**Course:** Neural Networks and Deep Learning
+
 ## Overview
 
 This assignment implements an **LSTM-based text generation model** trained on the [Epicurious Recipes dataset](https://www.kaggle.com/datasets/hugodarwood/epirecipes) from Kaggle.
