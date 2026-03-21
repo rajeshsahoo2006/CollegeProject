@@ -1,0 +1,1408 @@
+============================================================
+Step 1: Loading data...
+============================================================
+20111 recipes loaded.
+
+Example recipe (raw):
+Recipe for Ham Persillade with Mustard Potato Salad and Mashed Peas  | Chop enough parsley leaves to measure 1 tablespoon; reserve. Chop remaining leaves and stems and simmer with broth and garlic in a small saucepan, covered, 5 minutes. Meanwhile, sprinkle gelatin over water in a medium bowl and le ...
+
+============================================================
+Step 2: Tokenizing...
+============================================================
+Example recipe (tokenized):
+Recipe for Ham Persillade with Mustard Potato Salad and Mashed Peas | Chop enough parsley leaves to measure 1 tablespoon ; reserve . Chop remaining leaves and stems and simmer with broth and garlic in a small saucepan , covered , 5 minutes . Meanwhile , sprinkle gelatin over water in a medium bowl a ...
+
+Vocabulary size: 10000
+Sample vocab (index: word):
+  0: 
+  1: [UNK]
+  2: .
+  3: ,
+  4: and
+  5: to
+  6: in
+  7: the
+  8: with
+  9: a
+
+Example recipe tokenized (first 20 tokens):
+[  26   16  557    1    8  298  335  189    4 1054  494   27  332  228
+  235  262    5  594   11  133] 
+
+============================================================
+Step 3: Building training dataset...
+============================================================
+Training dataset ready.
+
+============================================================
+Step 4: Building LSTM model...
+============================================================
+Model: "functional"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Layer (type)                    ┃ Output Shape           ┃       Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ input_layer (InputLayer)        │ (None, None)           │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ embedding (Embedding)           │ (None, None, 100)      │     1,000,000 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ lstm (LSTM)                     │ (None, None, 128)      │       117,248 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dense (Dense)                   │ (None, None, 10000)    │     1,290,000 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+ Total params: 2,407,248 (9.18 MB)
+ Trainable params: 2,407,248 (9.18 MB)
+ Non-trainable params: 0 (0.00 B)
+============================================================
+Step 5: Training the LSTM...
+============================================================
+Loading checkpoint weights from ./checkpoint/checkpoint.weights.h5 ...
+/opt/anaconda3/envs/tf_lstm/lib/python3.11/site-packages/keras/src/saving/saving_lib.py:797: UserWarning: Skipping variable loading for optimizer 'adam', because it has 2 variables whereas the saved optimizer has 14 variables. 
+  saveable.load_own_variables(weights_store.get(inner_path))
+Checkpoint weights loaded.
+
+
+============================================================
+Step 6: Generating text at two temperatures
+  Temperature 1: 0.5  (more focused / conservative)
+  Temperature 2: 0.8  (more creative / diverse)
+============================================================
+
+────────────────────────────────────────────────────────────
+PROMPT: "recipe for roasted vegetables | chop 1 /"
+────────────────────────────────────────────────────────────
+
+[Temperature = 0.5]  (lower → more deterministic)
+
+[Generated text at temperature=0.5]:
+recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the oil , and 1 tablespoon sugar to a small bowl . add the
+
+
+PROMPT: recipe for roasted vegetables | chop 1 /
+  4                     54.92%
+  2                     40.86%
+  3                      3.51%
+  8                      0.61%
+  1                      0.04%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2
+  -                     70.36%
+  cup                   25.57%
+  cups                   2.91%
+  inch                   0.68%
+  /                      0.15%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup
+  ,                     32.71%
+  water                 30.04%
+  of                    17.43%
+  sugar                  5.53%
+  and                    2.50%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water
+  ,                     79.42%
+  and                   12.81%
+  in                     4.28%
+  .                      2.04%
+  to                     0.82%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water ,
+  and                   78.86%
+  1                     10.99%
+  about                  1.74%
+  then                   1.59%
+  garlic                 1.53%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and
+  1                     75.88%
+  garlic                 4.80%
+  sugar                  3.80%
+  3                      1.46%
+  2                      1.41%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1
+  /                     96.87%
+  1                      2.03%
+  teaspoon               0.41%
+  tablespoon             0.32%
+  cup                    0.27%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 /
+  2                     65.59%
+  4                     32.55%
+  3                      1.60%
+  8                      0.20%
+  1                      0.05%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4
+  cup                   83.39%
+  cups                   8.82%
+  teaspoon               7.03%
+  -                      0.44%
+  tsp                    0.11%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup
+  water                 60.23%
+  sugar                 34.49%
+  oil                    1.73%
+  of                     0.98%
+  broth                  0.34%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar
+  in                    53.98%
+  ,                     15.77%
+  and                   14.50%
+  .                      9.61%
+  to                     3.14%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar .
+  add                   31.25%
+  season                12.22%
+  bring                 11.62%
+  stir                  11.22%
+  whisk                  5.55%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss
+  to                    55.30%
+  with                  36.50%
+  well                   4.31%
+  in                     1.66%
+  until                  0.57%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with
+  1                     38.73%
+  salt                  27.97%
+  a                     11.26%
+  remaining              4.68%
+  2                      4.18%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1
+  /                     68.70%
+  teaspoon              15.00%
+  tablespoon            11.58%
+  cup                    3.32%
+  1                      1.18%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 /
+  2                     65.05%
+  4                     33.82%
+  3                      1.01%
+  8                      0.08%
+  1                      0.03%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2
+  cup                   60.42%
+  teaspoon              37.45%
+  tablespoons            0.67%
+  cups                   0.40%
+  teaspoons              0.33%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup
+  sugar                 42.58%
+  water                 34.31%
+  oil                    4.10%
+  of                     2.96%
+  flour                  2.72%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar
+  ,                     44.31%
+  and                   34.24%
+  .                     19.63%
+  ;                      0.85%
+  until                  0.43%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar ,
+  and                   74.59%
+  1                      9.87%
+  salt                   7.94%
+  sugar                  2.13%
+  then                   1.25%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and
+  salt                  68.06%
+  1                     27.06%
+  2                      1.18%
+  sugar                  1.00%
+  pepper                 0.57%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt
+  .                     42.17%
+  and                   25.02%
+  to                    20.86%
+  in                     8.28%
+  ,                      1.99%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt .
+  in                    29.27%
+  whisk                 11.63%
+  add                   11.47%
+  stir                   8.45%
+  heat                   6.52%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in
+  a                     99.87%
+  the                    0.06%
+  another                0.02%
+  large                  0.01%
+  heavy                  0.01%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a
+  large                 47.22%
+  small                 23.07%
+  bowl                  23.06%
+  food                   2.19%
+  blender                2.00%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large
+  bowl                  88.86%
+  saucepan               4.73%
+  skillet                3.57%
+  heavy                  2.17%
+  pot                    0.31%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl
+  whisk                 32.16%
+  ,                     26.86%
+  stir                  18.43%
+  with                  12.32%
+  toss                   4.10%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl ,
+  combine               38.27%
+  whisk                 25.38%
+  stir                  10.95%
+  beat                  10.51%
+  add                    7.32%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine
+  the                   91.64%
+  all                    3.94%
+  1                      1.62%
+  well                   0.71%
+  flour                  0.37%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the
+  flour                 22.17%
+  sugar                 14.30%
+  eggs                   8.62%
+  oil                    6.82%
+  egg                    6.07%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the oil
+  ,                     95.37%
+  and                    4.13%
+  in                     0.17%
+  with                   0.13%
+  .                      0.10%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the oil ,
+  and                   93.28%
+  the                    2.54%
+  salt                   1.30%
+  sugar                  1.00%
+  1                      0.38%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the oil , and
+  salt                  82.24%
+  1                      5.40%
+  the                    4.72%
+  pepper                 1.43%
+  sugar                  1.27%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the oil , and 1
+  /                     90.26%
+  tablespoon             3.89%
+  teaspoon               3.43%
+  cup                    1.73%
+  1                      0.53%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the oil , and 1 tablespoon
+  of                    67.05%
+  oil                   11.78%
+  sugar                  8.22%
+  salt                   5.27%
+  butter                 3.12%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the oil , and 1 tablespoon sugar
+  .                     31.84%
+  and                   31.25%
+  ,                     12.59%
+  in                    11.81%
+  to                     7.16%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the oil , and 1 tablespoon sugar to
+  a                     67.08%
+  taste                 24.13%
+  the                    8.10%
+  blend                  0.12%
+  combine                0.12%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the oil , and 1 tablespoon sugar to a
+  boil                  79.18%
+  bowl                   4.52%
+  simmer                 4.12%
+  medium                 2.97%
+  small                  2.47%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the oil , and 1 tablespoon sugar to a small
+  bowl                  90.91%
+  saucepan               8.76%
+  baking                 0.14%
+  skillet                0.05%
+  heavy                  0.03%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the oil , and 1 tablespoon sugar to a small bowl
+  .                     94.74%
+  until                  1.88%
+  and                    1.09%
+  to                     0.90%
+  ,                      0.72%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the oil , and 1 tablespoon sugar to a small bowl .
+  add                   72.25%
+  stir                   8.46%
+  whisk                  4.90%
+  pour                   2.41%
+  beat                   1.89%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cup water , and 1 / 4 cup sugar . toss with 1 / 2 cup sugar , and salt . in a large bowl , combine the oil , and 1 tablespoon sugar to a small bowl . add
+  the                   96.47%
+  1                      0.57%
+  butter                 0.55%
+  flour                  0.53%
+  eggs                   0.23%
+--------
+
+[Temperature = 0.8]  (higher → more creative)
+
+[Generated text at temperature=0.8]:
+recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 / 2 - inch - thick slices . put in muffin bowls . 
+
+
+PROMPT: recipe for roasted vegetables | chop 1 /
+  4                     47.40%
+  2                     39.40%
+  3                      8.50%
+  8                      2.85%
+  1                      0.52%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2
+  -                     54.11%
+  cup                   28.74%
+  cups                   7.39%
+  inch                   2.98%
+  /                      1.18%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups
+  ,                     29.55%
+  water                 26.78%
+  of                    12.12%
+  .                      4.01%
+  and                    2.13%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups ,
+  then                  37.72%
+  and                   17.61%
+  reserving              8.39%
+  in                     1.71%
+  cut                    1.54%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut
+  side                  29.00%
+  off                    9.68%
+  into                   8.47%
+  sides                  7.99%
+  each                   3.93%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side
+  down                  80.89%
+  of                    12.32%
+  up                     4.78%
+  ,                      0.32%
+  with                   0.27%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down
+  ,                     82.82%
+  in                     3.75%
+  with                   3.61%
+  on                     3.02%
+  .                      1.71%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down ,
+  and                   22.86%
+  1                     10.93%
+  in                     9.49%
+  on                     7.73%
+  then                   3.71%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and
+  1                     19.82%
+  in                     6.46%
+  cut                    4.82%
+  season                 2.57%
+  reserve                2.36%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets
+  in                    46.27%
+  until                 18.82%
+  with                  14.74%
+  .                     10.15%
+  over                   2.14%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until
+  smooth                15.58%
+  sugar                  5.68%
+  very                   4.68%
+  just                   4.09%
+  lightly                3.06%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins
+  are                   93.57%
+  is                     0.95%
+  .                      0.90%
+  begin                  0.86%
+  with                   0.77%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are
+  very                  15.14%
+  finely                12.99%
+  golden                 9.81%
+  blackened              6.34%
+  tender                 5.29%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft
+  ,                     53.65%
+  and                   31.91%
+  .                      7.21%
+  -                      1.13%
+  but                    0.88%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and
+  pale                   5.74%
+  set                    4.95%
+  brown                  4.04%
+  finely                 4.03%
+  golden                 3.46%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir
+  together              22.56%
+  -                     19.94%
+  in                    16.76%
+  to                    16.45%
+  well                   8.02%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to
+  1                     12.16%
+  blend                  6.57%
+  coat                   5.98%
+  form                   4.68%
+  desired                4.21%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1
+  /                     66.83%
+  1                     15.45%
+  -                      4.28%
+  cup                    3.37%
+  .                      2.95%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 /
+  2                     62.21%
+  4                     23.40%
+  3                      8.53%
+  8                      3.00%
+  1                      1.79%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 / 2
+  -                     47.61%
+  cup                   27.04%
+  1                      3.99%
+  cups                   3.21%
+  inch                   2.87%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 / 2 -
+  inch                  70.27%
+  cup                   10.72%
+  1                      2.56%
+  quart                  2.26%
+  ounce                  1.93%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 / 2 - inch
+  -                     52.15%
+  pieces                 9.65%
+  dice                   7.49%
+  thick                  4.63%
+  cubes                  3.69%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 / 2 - inch -
+  thick                 79.41%
+  high                   8.78%
+  wide                   2.23%
+  size                   2.18%
+  inch                   0.69%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 / 2 - inch - thick
+  slices                22.63%
+  .                     12.18%
+  -                      8.65%
+  ,                      8.29%
+  strips                 5.75%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 / 2 - inch - thick slices
+  .                     90.01%
+  (                      2.29%
+  and                    1.50%
+  ,                      1.47%
+  in                     1.24%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 / 2 - inch - thick slices .
+  cut                   10.22%
+  transfer               9.91%
+  in                     7.24%
+  place                  4.57%
+  peel                   3.97%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 / 2 - inch - thick slices . put
+  in                    14.44%
+  oven                  12.14%
+  1                      9.28%
+  2                      6.31%
+  the                    3.86%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 / 2 - inch - thick slices . put in
+  a                     40.29%
+  oven                  18.92%
+  heavy                  4.23%
+  2                      3.03%
+  1                      2.76%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 / 2 - inch - thick slices . put in muffin
+  cups                  26.81%
+  .                      7.39%
+  batches                5.77%
+  dish                   4.90%
+  boiler                 4.41%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 / 2 - inch - thick slices . put in muffin bowls
+  .                     92.10%
+  ;                      2.00%
+  and                    1.74%
+  or                     1.31%
+  ,                      1.15%
+--------
+
+PROMPT: recipe for roasted vegetables | chop 1 / 2 cups , cut side down , and tartlets until skins are soft and stir to 1 / 2 - inch - thick slices . put in muffin bowls .
+  sprinkle              10.20%
+                         8.48%
+  add                    6.33%
+  season                 5.07%
+  place                  4.60%
+--------
+
+────────────────────────────────────────────────────────────
+PROMPT: "recipe for chocolate cake |"
+────────────────────────────────────────────────────────────
+
+[Temperature = 0.5]  (lower → more deterministic)
+
+[Generated text at temperature=0.5]:
+recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and stir until smooth . in a bowl combine the egg yolks , the
+
+
+PROMPT: recipe for chocolate cake |
+  preheat               45.38%
+  in                    22.61%
+  combine               16.22%
+  bring                  2.11%
+  place                  2.01%
+--------
+
+PROMPT: recipe for chocolate cake | combine
+  all                   56.48%
+  the                   21.98%
+  first                 15.02%
+  1                      2.14%
+  sugar                  1.73%
+--------
+
+PROMPT: recipe for chocolate cake | combine all
+  ingredients           99.83%
+  sugar                  0.04%
+  milk                   0.03%
+  1                      0.02%
+  flour                  0.01%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients
+  in                    90.67%
+  except                 8.73%
+  into                   0.24%
+  and                    0.23%
+  .                      0.04%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in
+  a                     73.69%
+  medium                 9.74%
+  large                  5.43%
+  small                  4.96%
+  heavy                  3.56%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a
+  small                 33.93%
+  large                 28.55%
+  bowl                  14.94%
+  blender                7.60%
+  medium                 5.46%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large
+  bowl                  84.56%
+  saucepan              11.72%
+  pot                    1.47%
+  heavy                  0.92%
+  skillet                0.51%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl
+  .                     68.59%
+  ,                     11.30%
+  and                    8.15%
+  with                   3.60%
+  until                  2.80%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and
+  stir                  53.36%
+  add                   13.64%
+  let                    8.18%
+  whisk                  6.69%
+  toss                   4.21%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir
+  until                 56.37%
+  in                    35.44%
+  to                     2.55%
+  well                   2.53%
+  together               1.73%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in
+  the                   71.52%
+  flour                  8.09%
+  1                      3.74%
+  a                      3.55%
+  2                      1.40%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the
+  oil                   21.50%
+  flour                 15.34%
+  sugar                 12.38%
+  butter                 6.98%
+  remaining              5.18%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining
+  1                     76.45%
+  2                     12.84%
+  3                      4.44%
+  ingredients            4.01%
+  4                      0.31%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1
+  /                     96.89%
+  1                      1.36%
+  tablespoon             1.31%
+  teaspoon               0.22%
+  cup                    0.14%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 /
+  2                     79.75%
+  4                     19.18%
+  3                      1.02%
+  1                      0.02%
+  8                      0.02%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2
+  cup                   76.56%
+  teaspoon              19.75%
+  cups                   1.55%
+  tablespoons            0.67%
+  tsp                    0.53%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon
+  salt                  94.98%
+  pepper                 4.34%
+  of                     0.22%
+  kosher                 0.08%
+  black                  0.05%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt
+  and                   42.58%
+  ,                     37.65%
+  .                     19.37%
+  to                     0.19%
+  ;                      0.09%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt .
+  in                    20.91%
+  add                    8.23%
+  whisk                  7.14%
+  stir                   5.12%
+  heat                   4.38%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk
+  together              53.55%
+  the                   30.95%
+  in                    13.23%
+  flour                  0.71%
+  to                     0.54%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together
+  the                   91.46%
+  flour                  6.61%
+  sugar                  0.59%
+  eggs                   0.18%
+  and                    0.16%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the
+  flour                 46.45%
+  sugar                 13.21%
+  egg                   12.66%
+  eggs                   7.57%
+  vinegar                2.48%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg
+  ,                     37.84%
+  yolks                 29.23%
+  whites                22.83%
+  mixture                6.74%
+  and                    0.96%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites
+  ,                     70.81%
+  and                   17.80%
+  in                     4.54%
+  with                   2.50%
+  until                  2.39%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites ,
+  and                   85.26%
+  the                    9.25%
+  sugar                  2.12%
+  salt                   0.80%
+  flour                  0.38%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and
+  salt                  57.56%
+  the                   22.75%
+  sugar                  5.04%
+  1                      4.35%
+  remaining              1.90%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the
+  sugar                 18.36%
+  mixture               14.46%
+  salt                  14.17%
+  remaining              9.72%
+  flour                  9.57%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt
+  and                   49.50%
+  in                    22.27%
+  to                    10.11%
+  ,                      8.08%
+  .                      5.20%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt .
+  in                    36.10%
+  add                   13.13%
+  the                    6.37%
+  whisk                  5.76%
+  stir                   5.15%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add
+  the                   99.33%
+  flour                  0.15%
+  butter                 0.11%
+  a                      0.11%
+  to                     0.08%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the
+  oil                   21.15%
+  flour                 16.96%
+  butter                16.23%
+  remaining             10.19%
+  onion                  3.01%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter
+  and                   67.30%
+  ,                     27.92%
+  to                     3.25%
+  .                      0.88%
+  in                     0.15%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and
+  stir                  34.10%
+  beat                  13.49%
+  toss                  10.86%
+  the                    9.86%
+  pulse                  8.91%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and stir
+  until                 56.04%
+  to                    19.10%
+  in                    15.20%
+  well                   4.51%
+  together               2.09%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and stir until
+  the                   30.70%
+  smooth                28.95%
+  combined              18.39%
+  it                     5.55%
+  mixture                5.12%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and stir until smooth
+  .                     77.02%
+  and                   12.86%
+  ,                     10.03%
+  (                      0.06%
+  mixture                0.01%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and stir until smooth .
+  beat                  24.61%
+  add                   23.04%
+  stir                   6.85%
+  (                      4.79%
+  transfer               4.44%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and stir until smooth . in
+  a                     95.60%
+  the                    4.31%
+  another                0.05%
+  an                     0.03%
+  batches                0.00%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and stir until smooth . in a
+  bowl                  45.79%
+  small                 30.43%
+  large                 16.39%
+  food                   2.12%
+  blender                1.92%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and stir until smooth . in a bowl
+  whisk                 29.62%
+  ,                     26.36%
+  stir                  22.96%
+  of                     7.11%
+  with                   5.26%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and stir until smooth . in a bowl combine
+  the                   99.88%
+  together               0.04%
+  all                    0.02%
+  an                     0.01%
+  it                     0.01%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and stir until smooth . in a bowl combine the
+  flour                 26.61%
+  eggs                  13.25%
+  egg                   12.77%
+  remaining             10.44%
+  sugar                  7.68%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and stir until smooth . in a bowl combine the egg
+  whites                52.91%
+  yolks                 20.57%
+  ,                     14.28%
+  mixture               10.13%
+  cheese                 0.64%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and stir until smooth . in a bowl combine the egg yolks
+  ,                     91.77%
+  and                    6.59%
+  with                   1.27%
+  until                  0.21%
+  in                     0.04%
+--------
+
+PROMPT: recipe for chocolate cake | combine all ingredients in a large bowl and stir in the remaining 1 / 2 teaspoon salt . whisk together the egg whites , and the salt . add the butter and stir until smooth . in a bowl combine the egg yolks ,
+  the                   90.22%
+  and                    6.71%
+  sugar                  0.62%
+  salt                   0.46%
+  baking                 0.36%
+--------
+
+[Temperature = 0.8]  (higher → more creative)
+
+[Generated text at temperature=0.8]:
+recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add the garlic , 1 tbsp . oil and cook for medium - low
+
+
+PROMPT: recipe for chocolate cake |
+  preheat               25.78%
+  in                    16.68%
+  combine               13.55%
+  bring                  3.79%
+  place                  3.67%
+--------
+
+PROMPT: recipe for chocolate cake | put
+  oven                  70.97%
+  the                   14.73%
+  all                    1.80%
+  a                      1.64%
+  1                      1.53%
+--------
+
+PROMPT: recipe for chocolate cake | put oven
+  rack                  92.26%
+  to                     2.18%
+  temperature            1.10%
+  and                    1.08%
+  of                     0.67%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack
+  in                    90.93%
+  and                    2.10%
+  ,                      1.68%
+  .                      1.51%
+  for                    1.30%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in
+  middle                75.16%
+  oven                   5.93%
+  upper                  5.01%
+  a                      4.20%
+  center                 2.17%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle
+  position              69.04%
+  of                    22.01%
+  .                      6.75%
+  oven                   0.79%
+  and                    0.35%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of
+  oven                  98.71%
+  a                      0.32%
+  boiling                0.28%
+  middle                 0.12%
+  salted                 0.09%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven
+  and                   27.70%
+  .                     17.49%
+  ,                     14.28%
+  to                    12.30%
+  until                 11.68%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and
+  preheat               88.37%
+  roast                  1.64%
+  lower                  1.62%
+  bring                  0.81%
+  cook                   0.79%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat
+  oven                  66.48%
+  to                    27.34%
+  the                    3.51%
+  broiler                1.06%
+  a                      0.36%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven
+  to                    99.58%
+  .                      0.11%
+  and                    0.10%
+  temperature            0.04%
+  for                    0.02%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to
+  350°f                 38.62%
+  400°f                 15.97%
+  450°f                  9.16%
+  375°f                  9.07%
+  425°f                  8.26%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f
+  .                     98.57%
+  with                   0.29%
+  and                    0.26%
+  in                     0.25%
+  on                     0.13%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f .
+  line                   8.96%
+  butter                 6.79%
+  in                     6.13%
+  heat                   5.55%
+  place                  5.29%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook
+  the                   11.18%
+  onion                  9.33%
+  garlic                 9.08%
+  potatoes               8.18%
+  bacon                  5.72%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the
+  garlic                19.65%
+  onion                 12.98%
+  potatoes               5.31%
+  onions                 4.06%
+  butter                 3.23%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion
+  in                    58.80%
+  ,                     27.02%
+  and                    6.09%
+  on                     0.84%
+  mixture                0.83%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on
+  the                   65.19%
+  a                     27.13%
+  2                      0.99%
+  low                    0.97%
+  1                      0.86%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the
+  baking                 9.52%
+  oil                    8.43%
+  olive                  4.77%
+  onion                  4.50%
+  garlic                 3.76%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes
+  ,                     63.15%
+  and                   15.13%
+  in                    13.77%
+  with                   5.49%
+  on                     0.63%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and
+  the                   29.08%
+  cook                  13.26%
+  1                      3.15%
+  stir                   3.06%
+  bring                  2.57%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1
+  /                     61.49%
+  1                     12.31%
+  tablespoon             9.54%
+  cup                    5.56%
+  teaspoon               4.45%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon
+  salt                  55.47%
+  of                     8.31%
+  the                    5.70%
+  oil                    5.16%
+  a                      3.50%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced
+  the                   13.53%
+  sugar                 10.82%
+  garlic                 6.45%
+  salt                   6.22%
+  onion                  2.72%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil
+  ,                     28.88%
+  in                    27.59%
+  over                  11.49%
+  and                   10.88%
+  .                      5.17%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in
+  a                     88.59%
+  the                    9.12%
+  medium                 0.27%
+  2                      0.23%
+  large                  0.20%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a
+  large                 24.50%
+  small                 14.34%
+  medium                10.36%
+  stream                 8.88%
+  blender                7.62%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large
+  bowl                  32.66%
+  saucepan              31.28%
+  pot                   15.78%
+  skillet                4.24%
+  heavy                  2.36%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl
+  .                     30.93%
+  ,                     21.46%
+  and                   13.76%
+  with                   9.17%
+  to                     9.07%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and
+  stir                  30.62%
+  let                   12.83%
+  cook                   8.09%
+  add                    7.44%
+  toss                   5.08%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it
+  with                  28.78%
+  until                 12.70%
+  in                     7.08%
+  well                   5.83%
+  .                      5.21%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it .
+  add                   14.56%
+  in                     9.17%
+                         8.79%
+  bring                  5.30%
+  let                    4.00%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add
+  the                   91.74%
+  a                      0.67%
+  1                      0.46%
+  to                     0.44%
+  2                      0.44%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add the
+  garlic                 9.11%
+  onion                  8.38%
+  oil                    4.60%
+  onions                 3.96%
+  tomatoes               2.75%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add the garlic
+  and                   69.47%
+  ,                     19.45%
+  mixture                2.40%
+  .                      2.12%
+  to                     1.77%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add the garlic ,
+  and                   29.43%
+  the                   17.79%
+  salt                   7.30%
+  garlic                 4.65%
+  celery                 2.35%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add the garlic , 1
+  /                     59.65%
+  tablespoon            11.40%
+  1                      7.55%
+  teaspoon               4.65%
+  cup                    4.46%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add the garlic , 1 tbsp
+  .                     41.43%
+  ,                     29.73%
+  and                   10.20%
+  of                     5.62%
+  /                      5.31%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add the garlic , 1 tbsp .
+  2                     21.83%
+  3                     13.34%
+  4                      8.19%
+  reduce                 4.14%
+  in                     4.01%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add the garlic , 1 tbsp . oil
+  and                   40.07%
+  ,                     36.31%
+  the                    6.23%
+  in                     4.23%
+  .                      3.17%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add the garlic , 1 tbsp . oil and
+  cook                  27.94%
+  simmer                21.03%
+  the                    8.58%
+  bring                  7.14%
+  stir                   4.97%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add the garlic , 1 tbsp . oil and cook
+  ,                     29.08%
+  for                   20.58%
+  until                 16.42%
+  the                   14.66%
+  over                   9.03%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add the garlic , 1 tbsp . oil and cook for
+  2                     17.41%
+  5                     13.46%
+  1                     11.34%
+  3                     10.94%
+  10                    10.13%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add the garlic , 1 tbsp . oil and cook for medium
+  -                     96.90%
+  ,                      2.04%
+  .                      0.26%
+  and                    0.23%
+  speed                  0.16%
+--------
+
+PROMPT: recipe for chocolate cake | put oven rack in middle of oven and preheat oven to 400°f . cook the onion on the tomatoes and 1 teaspoon sliced oil in a large bowl and it . add the garlic , 1 tbsp . oil and cook for medium -
+  low                   21.30%
+  fry                   13.32%
+  high                  11.67%
+  tender                10.37%
+  cup                    3.17%
+--------
+
+============================================================
+Assignment complete.
+============================================================
