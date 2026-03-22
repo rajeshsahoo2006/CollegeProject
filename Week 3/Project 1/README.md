@@ -22,16 +22,6 @@ Reference notebook: [davidADSP/Generative_Deep_Learning_2nd_Edition – cgan.ipy
 
 ---
 
-## Grading Rubric
-
-| Component | Points |
-|-----------|--------|
-| Code for network and its output | 50 / 100 |
-| Observations about output and accuracy | 50 / 100 |
-| **Total** | **100** |
-
----
-
 ## Dataset
 
 **Source:** [Face VAE – Kaggle](https://www.kaggle.com/datasets/kushsheth/face-vae)
