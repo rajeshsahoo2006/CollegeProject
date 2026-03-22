@@ -2,7 +2,7 @@
 
 **Course:** Neural Networks and Deep Learning (NNDL)
 **Week:** 3
-**Maximum Score:** 100 points
+
 
 ---
 
