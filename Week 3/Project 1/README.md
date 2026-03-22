@@ -1,9 +1,12 @@
 # Project 1: Conditional GAN (CGAN) – Blond Hair Attribute
 
 **Author:** Rajesh Kumar Sahoo
+
 **Email:** rsahoo44691@ucumberlands.edu
+
 **Institution:** University of the Cumberlands
-**Course:** Neural Networks and Deep Learning (NNDL) — Week 3
+
+**Course:** 2026 Spring - Generative AI with Large Language Models 
 
 ---
 
