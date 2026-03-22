@@ -1,0 +1,5 @@
+list_attr_celeba.csv
+img_align_celeba/
+checkpoint/
+__pycache__/
+*.pyc
