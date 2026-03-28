@@ -1,9 +1,12 @@
 # Project 1: Conditional GAN (CGAN) – Blond Hair Attribute
 
 **Author:** Rajesh Kumar Sahoo
+
 **Email:** rsahoo44691@ucumberlands.edu
+
 **Institution:** University of the Cumberlands
-**Course:** Neural Networks and Deep Learning (NNDL) — Week 3
+
+**Course:** 2026 Spring - Generative AI with Large Language Models 
 
 ---
 
@@ -16,16 +19,6 @@ Build a **Conditional Wasserstein GAN with Gradient Penalty (CGAN / WGAN-GP)** t
 3. Submit the code, its output, and observations about accuracy
 
 Reference notebook: [davidADSP/Generative_Deep_Learning_2nd_Edition – cgan.ipynb](https://github.com/davidADSP/Generative_Deep_Learning_2nd_Edition/blob/main/notebooks/04_gan/03_cgan/cgan.ipynb)
-
----
-
-## Grading Rubric
-
-| Component | Points |
-|-----------|--------|
-| Code for network and its output | 50 / 100 |
-| Observations about output and accuracy | 50 / 100 |
-| **Total** | **100** |
 
 ---
 
