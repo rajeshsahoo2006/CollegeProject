@@ -1,0 +1,9 @@
+Assignment 6: energy-based models
+See the code about energy-based models that comes with the textbook at github.com. (https://github.com/davidADSP/Generative_Deep_Learning_2nd_Edition/blob/main/notebooks/07_ebm/01_ebm/ebm.ipynb)
+
+We’ll be using the standard MNIST dataset, consisting of grayscale images of handwritten digits.
+We need to build the neural network that represents the energy function from the code.
+Perform the training step of the contrastive divergence algorithm within a custom Keras model for 120 epochs.
+For the submission, provide the loss curve for the training process and compare and describe your results with the ones in the book.
+
+Code Link: Code for Assignment 6 https://github.com/davidADSP/Generative_Deep_Learning_2nd_Edition/blob/main/notebooks/07_ebm/01_ebm/ebm.ipynb
