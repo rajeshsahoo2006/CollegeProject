@@ -1,0 +1,15 @@
+Project 2: generate images with PixelCNN program
+We will build PixelCNN so to make the output of the network a mixture distribution, (see example on the page 162 in the textbook). TensorFlow Probability library provides a function that allows us to create a PixelCNN with mixture distribution output. Help code for this project is at https://github.com/davidADSP/Generative_Deep_Learning_2nd_Edition/blob/main/notebooks/05_autoregressive/03_pixelcnn_md/pixelcnn_md.ipynb
+
+Do the following:
+
+build a PixelCNN using the TensorFlow function
+trained the model and make it accept integer pixel values as input, in the range [0, 255].
+generate the outputs from the distribution using the sample function
+For the submission:
+
+provide the code you used and its output
+interpret the observations about output and accuracy
+See rubric for grading details.
+
+Refer the PDF files for more information. Also Ensure the code is execute in GPU for faster processing. Add a read me file with justification whywe used pu and cpu if it deviate from the ask.
