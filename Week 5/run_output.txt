@@ -1,0 +1,199 @@
+2026-04-05 14:34:02.662773: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M2
+2026-04-05 14:34:02.662841: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 8.00 GB
+2026-04-05 14:34:02.662849: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 2.67 GB
+2026-04-05 14:34:02.663051: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+2026-04-05 14:34:02.663066: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+2026-04-05 14:34:04.534865: W tensorflow/core/framework/local_rendezvous.cc:404] Local rendezvous is aborting with status: OUT_OF_RANGE: End of sequence
+============================================================
+Step 1: Loading data...
+============================================================
+30000 wine reviews loaded (limited from full dataset for speed)
+
+Example:
+wine review : US : California : Red Blend : Given extra time in the bottle, this wine combines a majority of Cabernet Sauvignon with Merlot, Cabernet Franc and Petit Verdot, aged entirely in French oak. The entry is sanguine and generous in red currant and denser blackberry, while elements of thyme lurk on the back of the palate. While the tannins remain sizable, they're silky, and should take on additional plushness in time. Cellar through 2020.
+
+============================================================
+Step 2: Tokenizing data...
+============================================================
+Vocabulary size: 10000
+Sample token mappings:
+  0: ''
+  1: '[UNK]'
+  2: ':'
+  3: ','
+  4: '.'
+  5: 'and'
+  6: 'the'
+  7: 'wine'
+  8: 'a'
+  9: 'of'
+
+============================================================
+Step 3: Creating training set (shifted sequences)...
+============================================================
+
+============================================================
+Step 4: Building GPT model...
+============================================================
+Model: "functional"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Layer (type)                    ┃ Output Shape           ┃       Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ input_layer (InputLayer)        │ (None, None)           │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ token_and_position_embedding    │ (None, None, 128)      │     1,287,680 │
+│ (TokenAndPositionEmbedding)     │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ transformer_block               │ [(None, None, 128),    │       165,504 │
+│ (TransformerBlock)              │ (None, 2, None, None)] │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dense_2 (Dense)                 │ (None, None, 10000)    │     1,290,000 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+ Total params: 2,743,184 (10.46 MB)
+ Trainable params: 2,743,184 (10.46 MB)
+ Non-trainable params: 0 (0.00 B)
+/opt/anaconda3/envs/tf_lstm/lib/python3.11/site-packages/keras/src/saving/saving_lib.py:797: UserWarning: Skipping variable loading for optimizer 'adam', because it has 2 variables whereas the saved optimizer has 42 variables. 
+  saveable.load_own_variables(weights_store.get(inner_path))
+2026-04-05 14:34:04.952916: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+
+============================================================
+Step 5: Training GPT model...
+============================================================
+Loading weights from /Users/sahoo/Desktop/NNDL/Code/Deep-Learning-with-TensorFlow-2-and-Keras/Week 5/checkpoint/checkpoint.weights.h5
+
+============================================================
+Step 6: Generating text at different temperatures...
+============================================================
+
+──────────────────────────────────────────────────
+  Temperature = 0.3
+──────────────────────────────────────────────────
+
+  Prompt: "wine review : us"
+
+Generated text:
+wine review : us : california : pinot noir : this is a rich , dry and fruity wine , with a good structure , but it ' s full - bodied and a full - bodied wine . it ' s a bit of cherry and sweet , with a fine , but it ' s a bit of
+
+
+  Prompt: "wine review : italy"
+
+Generated text:
+wine review : italy : tuscany : sangiovese : this opens with aromas of black cherry , leather and spice . the palate offers dried black cherry , clove and clove flavors of crushed black pepper , clove and licorice alongside firm tannins . 
+
+
+  Prompt: "wine review : france"
+
+Generated text:
+wine review : france : bordeaux : bordeaux - style red blend : this is a blend of cabernet sauvignon , syrah and cabernet sauvignon , this is a dense wine , full - bodied wine . it ' s a full - bodied wine , with a fine - grained tannins . 
+
+
+──────────────────────────────────────────────────
+  Temperature = 0.5
+──────────────────────────────────────────────────
+
+  Prompt: "wine review : us"
+
+Generated text:
+wine review : us : california : zinfandel : a rich , rich , concentrated and ripe and ripe , with cherry fruit flavors , it ' s a little hot , with a touch of vanilla and well . 
+
+
+  Prompt: "wine review : italy"
+
+Generated text:
+wine review : italy : northeastern italy : pinot grigio : this opens with aromas of mature red flower and a whiff of dried stone . the palate offers the palate offers peach , black cherry , peach and a hint of honey alongside bright acidity . 
+
+
+  Prompt: "wine review : france"
+
+Generated text:
+wine review : france : burgundy : pinot noir : this is a [UNK] - syrah - based wine , with its full - bodied red fruits , this wine is a ripe wine that is dense and full of ripe black currant fruit and spice . the wine is ready to drink . 
+
+
+──────────────────────────────────────────────────
+  Temperature = 1.0
+──────────────────────────────────────────────────
+
+  Prompt: "wine review : us"
+
+Generated text:
+wine review : us : california : zinfandel : there ' s lots of botrytis on the eye , this newish bottling . the dense , soft palate presents crisp morello wide - plum fruit , tobacco and ultraripe pear flavors that linger long acidity . 
+
+
+  Prompt: "wine review : italy"
+
+Generated text:
+wine review : italy : tuscany : red blend : made predominantly merlot , this blend of pinotage , nebbiolo opens with dried red plum , olive , pressed leather and menthol . smooth , easy drinking , and personality . it shows a big creamy , focused mix of black chocolate and exotic clove . lively , angular ,
+
+
+  Prompt: "wine review : france"
+
+Generated text:
+wine review : france : bordeaux : bordeaux - style red fruit , so 93 spicy lime and everything is an champoux . the aromatic elements , this luscious wine is very delicious . the wine is nothing of the first , too much in flavor , this has its acidity and blackberry flavors . it ' s not overly
+
+
+──────────────────────────────────────────────────
+  Temperature = 1.2
+──────────────────────────────────────────────────
+
+  Prompt: "wine review : us"
+
+Generated text:
+wine review : us : california : petite sirah : grenache also smoke , soft , cedar and oak aromas meet of pencil baron as iodine . this just - , aroma seems small 82 displays scents pop on through black smoky on the palate of bell pepper in the remainder , given beginning for eight years , so thick
+
+
+  Prompt: "wine review : italy"
+
+Generated text:
+wine review : italy : piedmont : nebbiolo : this barolo is a packaged from the linear , exciting st for which in taylor is wiry , a flavorful , [UNK] vineyard delicate style suggest aromas . aromas of overwhelms the orchard grapes can ' ve quite ripe best at things and puglia . fruit , it ' s cedary
+
+
+  Prompt: "wine review : france"
+
+Generated text:
+wine review : france : burgundy : pinot noir : a light two parcels almost - are shaped single - this one intensity for selection is becoming irresistibly port out flavors . there are balanced by fine muscadet being flabby . still flavors are developing late - aftertaste has at it provide plenty of brooding tannins . drink now .
+
+
+============================================================
+Step 7: Temperature Comparison & Interpretation
+============================================================
+
+Temperature Controls the Randomness of Text Generation
+-------------------------------------------------------
+
+How it works:
+  - Probabilities are raised to the power of (1 / temperature)
+  - Then renormalized before sampling
+
+Results observed:
+
+  Temperature = 0.3 (Low randomness)
+  → Very predictable, repetitive text
+  → Tends to pick the highest-probability word every time
+  → Good coherence but lacks creativity and diversity
+  → May get stuck in loops of common phrases
+
+  Temperature = 0.5 (Moderate-low randomness)
+  → Mostly coherent with occasional variety
+  → A good balance for readable, structured wine reviews
+  → Still favors common words but allows some exploration
+
+  Temperature = 1.0 (Standard / no scaling)
+  → Uses the raw learned probability distribution
+  → Produces diverse, creative text
+  → Some grammatical errors may appear
+  → Good for exploring the model's learned vocabulary
+
+  Temperature = 1.2 (High randomness)
+  → Very creative and diverse word choices
+  → Often produces unusual or nonsensical combinations
+  → Poor coherence — sentences may not make sense
+  → Useful for seeing the full range of the model's vocabulary
+
+Summary:
+  Lower temperature → more repetitive, more coherent
+  Higher temperature → more creative, less stable
+  The trade-off is between predictability and diversity.
+
+============================================================
+Assignment 7 complete.
+============================================================
