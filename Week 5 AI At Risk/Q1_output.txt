@@ -1,0 +1,48 @@
+Total tweets: 364
+Columns: ['RowID', 'message_id', 'date', 'tweet_text', 'positive', 'negative', 'Sentiment_score']
+
+Sample tweets:
+  1. I love the barclays feedback machines that say we value ur feedback how was your...
+  2. Get even more Jay Z There will be a 40 40 Club at the barclays Center xa0...
+  3. RbS sharesup 7 9 Lloyds up 5 2 Barclays up 4 2 on back of Bank of England planne...
+
+================================================================================
+SENTIMENT ANALYSIS RESULTS
+================================================================================
+
+--- Summary Statistics ---
+Total tweets analyzed: 364
+Positive tweets (score > 0): 118
+Negative tweets (score < 0): 79
+Neutral tweets (score = 0):  167
+
+Average Sentiment Score: 0.1039
+Std Dev of Sentiment Score: 0.7173
+
+--- Sample Results (first 15 tweets) ---
+Row   Positive   Negative   Score      Tweet (first 60 chars)
+-----------------------------------------------------------------------------------------------
+1     5          0          1.0000     I love the barclays feedback machines that say we value ur f
+2     2          0          1.0000     Get even more Jay Z There will be a 40 40 Club at the barcla
+3     0          0          0.0000     RbS sharesup 7 9 Lloyds up 5 2 Barclays up 4 2 on back of Ba
+4     0          0          0.0000     Jay Z To Open 40 40 Club at brooklyn s Barclays Center
+5     0          2          -1.0000    my life would be complete if i went to a world cup or barcla
+6     5          0          1.0000     send the brotha much love from the Tube
+7     2          0          1.0000     Much Luv Fam
+8     2          0          1.0000     excellent vid, definitely poor management. they microwaved h
+9     2          0          1.0000     thanks
+10    0          1          -1.0000    yup. I remember the trouble he gave Trinidad first round.
+11    5          0          1.0000     The price of being locked out of home ownership Lifetime of 
+12    2          0          1.0000     Anfield will host City Arsenal and Manchester United in our 
+13    0          0          0.0000     barclays to allow parents to help with affordability across 
+14    0          0          0.0000     Quill songz ( the runner ) on YouTube
+15    0          0          0.0000     buying property saves money says Barclays Finance
+
+Results saved to 'Barclays_Tweets.xlsx' sheet 'BarclaysTweets' columns E, F, G
+
+--- Sentiment Distribution ---
+  Strong Negative     :   77 tweets (21.2%)
+  Weak Negative       :    2 tweets (0.5%)
+  Neutral             :  167 tweets (45.9%)
+  Weak Positive       :    4 tweets (1.1%)
+  Strong Positive     :  115 tweets (31.6%)

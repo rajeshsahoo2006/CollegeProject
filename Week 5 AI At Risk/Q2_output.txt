@@ -1,0 +1,163 @@
+Total tweets loaded: 364
+
+================================================================================
+1. TEXT CLASSIFICATION
+================================================================================
+
+Sentiment Classification Distribution:
+  Neutral     :  200 tweets (54.9%)
+  Positive    :  109 tweets (29.9%)
+  Negative    :   55 tweets (15.1%)
+
+Subjectivity Classification Distribution:
+  Factual/Objective   :  262 tweets (72.0%)
+  Opinion/Subjective  :  102 tweets (28.0%)
+
+Sample Classifications (first 10):
+#    Sentiment    Type                   Tweet (first 55 chars)
+---------------------------------------------------------------------------------------------
+1    Positive     Opinion/Subjective     I love the barclays feedback machines that say we value
+2    Positive     Factual/Objective      Get even more Jay Z There will be a 40 40 Club at the b
+3    Neutral      Factual/Objective      RbS sharesup 7 9 Lloyds up 5 2 Barclays up 4 2 on back 
+4    Neutral      Factual/Objective      Jay Z To Open 40 40 Club at brooklyn s Barclays Center
+5    Negative     Factual/Objective      my life would be complete if i went to a world cup or b
+6    Positive     Opinion/Subjective     send the brotha much love from the Tube
+7    Positive     Factual/Objective      Much Luv Fam
+8    Positive     Opinion/Subjective     excellent vid, definitely poor management. they microwa
+9    Positive     Factual/Objective      thanks
+10   Neutral      Factual/Objective      yup. I remember the trouble he gave Trinidad first roun
+
+================================================================================
+2. TOPICS EXTRACTION
+================================================================================
+
+Top 30 Topics/Key Terms (by TF-IDF importance):
+Rank   Topic/Term                     TF-IDF Score
+--------------------------------------------------
+1      barclays                       0.1120
+2      diamond                        0.0397
+3      libor                          0.0299
+4      bob                            0.0293
+5      bob diamond                    0.0275
+6      scandal                        0.0254
+7      bank                           0.0254
+8      just                           0.0164
+9      banks                          0.0159
+10     new                            0.0158
+11     _x000d_                        0.0153
+12     banking                        0.0147
+13     chairman                       0.0130
+14     barclays libor                 0.0123
+15     fraud                          0.0123
+16     says                           0.0122
+17     people                         0.0120
+18     like                           0.0118
+19     love                           0.0113
+20     right                          0.0112
+21     bankers                        0.0110
+22     uk                             0.0110
+23     market                         0.0109
+24     agius                          0.0105
+25     thanks                         0.0103
+26     world                          0.0103
+27     boss                           0.0102
+28     time                           0.0102
+29     barclays scandal               0.0101
+30     barclays bank                  0.0101
+
+Sample Topic Extraction per Tweet (first 10):
+--------------------------------------------------------------------------------
+Tweet 1: I love the barclays feedback machines that say we value ur f...
+  Topics: value ur feedback, topkenyanlies, barclays feedback machines
+Tweet 2: Get even more Jay Z There will be a 40 40 Club at the barcla...
+  Topics: barclays center xa0, jay z
+Tweet 3: RbS sharesup 7 9 Lloyds up 5 2 Barclays up 4 2 on back of Ba...
+  Topics: barclays, lloyds, rbs, england
+Tweet 4: Jay Z To Open 40 40 Club at brooklyn s Barclays Center...
+  Topics: barclays, brooklyn s, jay z
+Tweet 5: my life would be complete if i went to a world cup or barcla...
+  Topics: world cup, barclays premier league game ilovesoccer, weallplaysoccer
+Tweet 6: send the brotha much love from the Tube...
+  Topics: tube
+Tweet 7: Much Luv Fam...
+  Topics: luv fam
+Tweet 8: excellent vid, definitely poor management. they microwaved h...
+  Topics: excellent vid, whole career, poor management
+Tweet 9: thanks...
+  Topics: N/A
+Tweet 10: yup. I remember the trouble he gave Trinidad first round....
+  Topics: trinidad
+
+================================================================================
+3. TEXT CLUSTERING
+================================================================================
+
+Number of clusters: 5
+
+Cluster Distribution:
+  Cluster 1:  128 tweets (35.2%)
+  Cluster 2:  152 tweets (41.8%)
+  Cluster 3:   20 tweets (5.5%)
+  Cluster 4:   42 tweets (11.5%)
+  Cluster 5:   22 tweets (6.0%)
+
+Top 10 Terms per Cluster:
+
+  Cluster 1: _x000d_, love, just, great, like, lol, agius, right, marcus agius, marcus
+    - I love the barclays feedback machines that say we value ur feedback ho...
+    - send the brotha much love from the Tube...
+    - Much Luv Fam...
+
+  Cluster 2: barclays, libor, scandal, banking, banks, barclays libor, new, finance, says, barclays center
+    - Get even more Jay Z There will be a 40 40 Club at the barclays Center ...
+    - Jay Z To Open 40 40 Club at brooklyn s Barclays Center...
+    - my life would be complete if i went to a world cup or barclays premier...
+
+  Cluster 3: year, market, years, barclays, manipulated, bonuses, black, laws, premier, like
+    - today there was a black grand sport as well with a red interior in the...
+    - Scandal at barclays is of breathtaking cynicism Fixing the market duri...
+    - Shouldn t bob Diamond be giving back his bonuses from the years when B...
+
+  Cluster 4: diamond, bob, bob diamond, barclays, ceo, barclays bob, boss, quits, barclays ceo, barclays boss
+    - barclays chief Bob Diamond gives up 2012 bonus over 290m fine...
+    - bob Diamond Rich Ricci I m not sure it helps the Barclays top brass ar...
+    - Should bob Diamond resign over Barclays scandal Join our debate here...
+
+  Cluster 5: bank, barclays bank, barclays, england, bank england, resigns, reveals, west, tax, bankers
+    - RbS sharesup 7 9 Lloyds up 5 2 Barclays up 4 2 on back of Bank of Engl...
+    - Jimmy Carr and his account at barclays bank he criticised as having bl...
+    - 15 banks are being downgraded barclays down by 2 Bank of America down ...
+
+================================================================================
+4. DEEP CATEGORIZATION (Basel II Operational Risk Categories)
+================================================================================
+
+Basel II Category Distribution:
+  Uncategorized                      :  248 tweets (68.1%)
+  Clients Products Business          :   39 tweets (10.7%)
+  Execution Delivery Process         :   36 tweets (9.9%)
+  Business Disruption                :   17 tweets (4.7%)
+  Internal Fraud                     :   14 tweets (3.8%)
+  Employment Practices               :    6 tweets (1.6%)
+  External Fraud                     :    4 tweets (1.1%)
+
+Sample Categorizations (first 15):
+#    Category                            Tweet (first 50 chars)
+------------------------------------------------------------------------------------------
+1    Clients Products Business           I love the barclays feedback machines that say we 
+2    Uncategorized                       Get even more Jay Z There will be a 40 40 Club at 
+3    Uncategorized                       RbS sharesup 7 9 Lloyds up 5 2 Barclays up 4 2 on 
+4    Uncategorized                       Jay Z To Open 40 40 Club at brooklyn s Barclays Ce
+5    Uncategorized                       my life would be complete if i went to a world cup
+6    Uncategorized                       send the brotha much love from the Tube
+7    Uncategorized                       Much Luv Fam
+8    Uncategorized                       excellent vid, definitely poor management. they mi
+9    Uncategorized                       thanks
+10   Uncategorized                       yup. I remember the trouble he gave Trinidad first
+11   Uncategorized                       The price of being locked out of home ownership Li
+12   Uncategorized                       Anfield will host City Arsenal and Manchester Unit
+13   Clients Products Business           barclays to allow parents to help with affordabili
+14   Uncategorized                       Quill songz ( the runner ) on YouTube
+15   Uncategorized                       buying property saves money says Barclays Finance
+
+Results saved to 'Barclays_Tweets.xlsx' sheet 'BarclaysTweets_topics'

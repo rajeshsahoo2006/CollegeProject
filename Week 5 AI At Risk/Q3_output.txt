@@ -1,0 +1,98 @@
+================================================================================
+Q3: FORECASTING AND RISK MANAGEMENT
+================================================================================
+
+FORECASTING IN RISK MANAGEMENT
+-------------------------------
+Forecasting is the process of making predictions about future events based on
+historical data and analysis. It uses statistical techniques, mathematical models,
+and informed judgment to estimate future trends, values, or outcomes.
+
+IMPORTANCE IN RISK MANAGEMENT:
+1. Early Warning: Forecasting helps identify potential risks before they materialize,
+   allowing organizations to take proactive measures.
+2. Capital Allocation: Accurate loss forecasting helps banks and financial institutions
+   allocate adequate capital reserves (as required by Basel accords).
+3. Strategic Planning: Enables organizations to plan budgets, resources, and
+   contingency measures based on expected future losses.
+4. Regulatory Compliance: Financial regulators require institutions to forecast
+   potential losses for stress testing and capital adequacy assessments.
+5. Performance Monitoring: Comparing actual vs. forecasted values helps evaluate
+   the effectiveness of risk mitigation strategies.
+
+TIME-SERIES TECHNIQUES IN QUANTITATIVE FORECASTING:
+1. Simple/Single Exponential Smoothing (SES): Assigns exponentially decreasing
+   weights to past observations. Best for data without trend or seasonality.
+2. Double Exponential Smoothing (Holt's): Extends SES to capture linear trends
+   in the data using two smoothing equations.
+3. Triple Exponential Smoothing (Holt-Winters): Extends Holt's method to capture
+   both trend and seasonality using three smoothing equations.
+4. Moving Average: Uses the average of a fixed number of past observations.
+5. ARIMA (AutoRegressive Integrated Moving Average): Combines autoregression,
+   differencing, and moving average components.
+6. GARCH: Used for forecasting volatility in financial time series.
+
+================================================================================
+SINGLE EXPONENTIAL SMOOTHING (SES) CALCULATION
+================================================================================
+
+Formula: Ft+1 = Ft + alpha * (At - Ft)
+Smoothing constant (alpha): 0.5
+Initial forecast F(2011): 75 million USD
+
+Year     Actual (At)     Forecast (Ft)   Error (At-Ft)   alpha*(At-Ft)
+--------------------------------------------------------------------
+2011     76              75.00           1.00            0.50
+2012     75              75.50           -0.50           -0.25
+2013     74              75.25           -1.25           -0.62
+2014     79              74.62           4.38            2.19
+2015     78              76.81           1.19            0.59
+
+2016     ?               77.41          
+
+==================================================
+FORECASTED LOSS FOR 2016: 77.41 million USD
+==================================================
+
+Step-by-step SES Calculation:
+  F(2011) = 75 (given initial forecast)
+  F(2012) = F(2011) + 0.5 * (A(2011) - F(2011))
+         = 75.00 + 0.5 * (76 - 75.00)
+         = 75.00 + 0.5 * 1.00
+         = 75.00 + 0.50
+         = 75.50
+  F(2013) = F(2012) + 0.5 * (A(2012) - F(2012))
+         = 75.50 + 0.5 * (75 - 75.50)
+         = 75.50 + 0.5 * -0.50
+         = 75.50 + -0.25
+         = 75.25
+  F(2014) = F(2013) + 0.5 * (A(2013) - F(2013))
+         = 75.25 + 0.5 * (74 - 75.25)
+         = 75.25 + 0.5 * -1.25
+         = 75.25 + -0.62
+         = 74.62
+  F(2015) = F(2014) + 0.5 * (A(2014) - F(2014))
+         = 74.62 + 0.5 * (79 - 74.62)
+         = 74.62 + 0.5 * 4.38
+         = 74.62 + 2.19
+         = 76.81
+  F(2016) = F(2015) + 0.5 * (A(2015) - F(2015))
+         = 76.81 + 0.5 * (78 - 76.81)
+         = 76.81 + 0.5 * 1.19
+         = 76.81 + 0.59
+         = 77.41
+
+==================================================
+STATISTICAL MEASURES OF ACTUAL LOSSES
+==================================================
+  Actual Losses: [76, 75, 74, 79, 78]
+  Expected Loss (Mean):    76.40 million USD
+  Standard Deviation:      2.0736 million USD
+  Variance:                4.3000 million USD^2
+
+  Calculation Details:
+  Mean = Sum / N = 382 / 5 = 76.40
+  Deviations squared: ['0.16', '1.96', '5.76', '6.76', '2.56']
+  Sum of squared deviations: 17.20
+  Variance = 17.20 / 4 = 4.3000
+  Std Dev = sqrt(4.3000) = 2.0736
