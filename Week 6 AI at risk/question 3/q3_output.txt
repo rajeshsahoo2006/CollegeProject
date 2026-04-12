@@ -1,0 +1,38 @@
+Loading WellsFargo unstructured data...
+Loaded 9186 rows.
+
+======================================================================
+SAMPLE messageText BEFORE cleaning (first 3 rows):
+======================================================================
+
+Row 0: [<strong>Wells Fargo</strong>, ' fined $185 million in penalties for illegally creating accounts for customers: ', <a class="twitter-timeline-link" data-expanded-url="http://cbsn.ws/2c06AFK" dir="ltr"...
+
+Row 1: [<strong>Wells Fargo</strong>, ' fined $100 million for illegally opening unauthorized accounts ', <a class="twitter-timeline-link" data-expanded-url="http://slnm.us/OQCdUw9" dir="ltr" href="https://t...
+
+Row 2: ["Why Aren't Exec Heads Rolling at ", <strong>Wells Fargo</strong>, '? ', <a class="twitter-atreply pretty-link js-nav" data-mentioned-user-id="27050278" dir="ltr" href="/kateberry1"><s>@</s><b>katebe...
+
+
+Cleaning data...
+
+======================================================================
+SAMPLE CleanedText AFTER cleaning (first 3 rows):
+======================================================================
+
+Row 0: Wells Fargo , fined $185 million in penalties for illegally creating accounts for customers:
+
+Row 1: Wells Fargo , fined $100 million for illegally opening unauthorized accounts
+
+Row 2: Why Arent Exec Heads Rolling at , Wells Fargo , ? , @ kateberry1
+
+======================================================================
+CLEANING SUMMARY
+======================================================================
+Total rows:              9186
+Non-empty CleanedText:   9168
+Empty after cleaning:    18
+Avg length (original):   393.2 chars
+Avg length (cleaned):    137.1 chars
+Avg reduction:           65.1%
+
+Saving cleaned data to: /Users/sahoo/Desktop/NNDL/Code/Deep-Learning-with-TensorFlow-2-and-Keras/Week 6 AI at risk/question 3/Week6 - WellsFargo_Cleaned.xlsx
+Done! Cleaned data saved successfully.
