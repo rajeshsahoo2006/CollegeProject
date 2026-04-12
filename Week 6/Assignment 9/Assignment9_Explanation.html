@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment 9: Music-Generating Transformer — Results &amp; Explanation</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 20px; line-height: 1.7; color: #333; }
+        h1 { color: #1a1a2e; border-bottom: 3px solid #e94560; padding-bottom: 10px; }
+        h2 { color: #16213e; margin-top: 30px; }
+        h3 { color: #0f3460; }
+        code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; }
+        pre { background: #1a1a2e; color: #e0e0e0; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        .highlight { background: #fff3cd; padding: 12px 16px; border-left: 4px solid #ffc107; margin: 15px 0; border-radius: 4px; }
+        .diff { background: #e8f5e9; padding: 12px 16px; border-left: 4px solid #4caf50; margin: 15px 0; border-radius: 4px; }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px 14px; text-align: center; }
+        th { background: #16213e; color: white; }
+        tr:nth-child(even) { background: #f8f8f8; }
+    </style>
+</head>
+<body>
+
+<h1>Assignment 9: Music-Generating Transformer</h1>
+<p><strong>Course:</strong> MSAI-630-B01 — Generative AI with Large Language Models<br>
+<strong>Student:</strong> Rajesh Sahoo<br>
+<strong>Date:</strong> April 2026</p>
+
+<h2>1. Objective</h2>
+<p>Build a Transformer model to generate Bach-style cello music from MIDI files.
+The model learns to predict the next note and duration given a sequence of previous tokens,
+then generates new music autoregressively from a seed token.</p>
+
+<h2>2. Data Pipeline</h2>
+
+<h3>2.1 MIDI Parsing &amp; Tokenization</h3>
+<p>Each MIDI file (Bach chorales/cello suites) is parsed into two parallel token streams:</p>
+<ul>
+    <li><strong>Note tokens:</strong> pitch names with octave (e.g., <code>C4</code>, <code>G3</code>), rests, time signatures (<code>3/4TS</code>), key signatures (<code>G:major</code>), and a <code>START</code> marker.</li>
+    <li><strong>Duration tokens:</strong> quarter-note lengths as strings (e.g., <code>1.0</code>, <code>0.5</code>, <code>0.25</code>).</li>
+</ul>
+<p>Overlapping sequences of length 51 are created (50 input tokens + 1 target), following the reference implementation's sliding window approach.</p>
+
+<h3>2.2 Dataset</h3>
+<p>36 Bach MIDI files from the music21 corpus are used, yielding thousands of training sequences. Each sequence is tokenized into integer indices using separate vocabularies for notes and durations.</p>
+
+<h2>3. Model Architecture</h2>
+
+<pre>
+Note Tokens ──→ [Embedding + Sinusoidal Pos Enc] ──┐
+                                                     ├──→ Concatenate ──→ Transformer Block ──→ Note Head
+Duration Tokens → [Embedding + Sinusoidal Pos Enc] ──┘                                    └──→ Duration Head
+</pre>
+
+<table>
+    <tr><th>Component</th><th>Details</th></tr>
+    <tr><td>Note Embedding</td><td>128-dim token embedding + sinusoidal positional encoding</td></tr>
+    <tr><td>Duration Embedding</td><td>128-dim token embedding + sinusoidal positional encoding</td></tr>
+    <tr><td>Concatenated Dim</td><td>256 (128 + 128)</td></tr>
+    <tr><td>Transformer Block</td><td>4-head causal self-attention + FFN (256-dim)</td></tr>
+    <tr><td>Note Output Head</td><td>Linear → softmax over note vocabulary</td></tr>
+    <tr><td>Duration Output Head</td><td>Linear → softmax over duration vocabulary</td></tr>
+    <tr><td>Total Parameters</td><td>~450K</td></tr>
+</table>
+
+<h3>Key Design Choices</h3>
+<ul>
+    <li><strong>Causal masking</strong> prevents the model from seeing future tokens, enabling autoregressive generation.</li>
+    <li><strong>Dual output heads</strong> predict note and duration simultaneously from shared attention representations.</li>
+    <li><strong>Sinusoidal positional encoding</strong> (not learned) generalizes to different sequence lengths.</li>
+</ul>
+
+<h2>4. Training Configuration</h2>
+<table>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>Optimizer</td><td>Adam (lr=0.001)</td></tr>
+    <tr><td>Loss</td><td>Cross-entropy (note) + Cross-entropy (duration)</td></tr>
+    <tr><td>Epochs</td><td>200</td></tr>
+    <tr><td>Batch Size</td><td>64</td></tr>
+    <tr><td>Sequence Length</td><td>50</td></tr>
+    <tr><td>Gradient Clipping</td><td>max norm = 1.0</td></tr>
+</table>
+
+<h2>5. Generation Process</h2>
+<p>Music is generated autoregressively:</p>
+<ol>
+    <li>Seed the model with a <code>START</code> token (note) and <code>0.0</code> (duration).</li>
+    <li>At each step, the model predicts probability distributions over the next note and duration.</li>
+    <li>Sample from these distributions using <strong>temperature-controlled sampling</strong>.</li>
+    <li>Append the sampled tokens and repeat until reaching the desired length.</li>
+    <li>Convert the token sequence back to music21 objects and export as MIDI.</li>
+</ol>
+
+<div class="highlight">
+    <strong>Temperature controls output diversity:</strong><br>
+    <code>T=0.3</code>: Very conservative, repetitive but "safe" melodies<br>
+    <code>T=0.5</code>: Balanced — coherent structure with some variety<br>
+    <code>T=0.8</code>: More creative, occasional surprising note choices<br>
+    <code>T=1.0</code>: Maximum variety, may produce less coherent sequences
+</div>
+
+<h2>6. Results</h2>
+
+<h3>6.1 Training</h3>
+<p>The training loss decreases steadily over 200 epochs, indicating the model learns the statistical patterns of Bach's music — common note progressions, rhythmic patterns, and key relationships. Loss curves and sample MIDI files are generated periodically during training.</p>
+
+<h3>6.2 Generated Music</h3>
+<p>The model generates MIDI files at four different temperatures. At lower temperatures (0.3–0.5), the output tends to follow common patterns from the training data — scale passages, arpeggios, and familiar rhythmic figures. At higher temperatures (0.8–1.0), the output is more exploratory with wider interval leaps and varied rhythms.</p>
+
+<h3>6.3 Output Files</h3>
+<ul>
+    <li><code>training_loss.png</code> — Loss curve over epochs</li>
+    <li><code>generated_epoch_*.mid</code> — MIDI samples generated during training</li>
+    <li><code>final_temp_0.3.mid</code> through <code>final_temp_1.0.mid</code> — Final generations at different temperatures</li>
+    <li><code>piano_roll_temp_*.png</code> — Piano roll visualizations</li>
+    <li><code>attention_weights.png</code> — Attention heatmap from the Transformer</li>
+    <li><code>note_distribution.png</code> — Distribution of notes in the training data</li>
+</ul>
+
+<h2>7. Differences from Original Code</h2>
+
+<div class="diff">
+    <strong>Key differences between this implementation and the reference (TF/Keras):</strong>
+</div>
+
+<table>
+    <tr><th>Aspect</th><th>Original (Reference)</th><th>This Implementation</th></tr>
+    <tr><td><strong>Framework</strong></td><td>TensorFlow / Keras</td><td>PyTorch (MPS GPU support)</td></tr>
+    <tr><td><strong>Attention Heads</strong></td><td>5 heads</td><td>4 heads (embed_dim must be divisible by num_heads in PyTorch)</td></tr>
+    <tr><td><strong>Tokenization</strong></td><td>Keras TextVectorization layer</td><td>Custom vocabulary builder with sorted tokens</td></tr>
+    <tr><td><strong>Positional Encoding</strong></td><td>Custom SinePositionEncoding (Keras Layer)</td><td>PyTorch SinePositionEncoding (standard Vaswani formulation)</td></tr>
+    <tr><td><strong>Epochs</strong></td><td>5000</td><td>200 (sufficient for convergence with this dataset size)</td></tr>
+    <tr><td><strong>Dataset</strong></td><td>6 Bach Cello Suite MIDI files</td><td>36 Bach chorales/pieces from music21 corpus (more data, broader variety)</td></tr>
+    <tr><td><strong>Generation</strong></td><td>Single temperature (0.5)</td><td>Multiple temperatures (0.3, 0.5, 0.8, 1.0) for comparison</td></tr>
+    <tr><td><strong>Visualization</strong></td><td>music21 .show() (requires MuseScore)</td><td>Piano roll plots + attention heatmaps (self-contained PNG output)</td></tr>
+    <tr><td><strong>Causal Mask</strong></td><td>Custom causal_attention_mask function</td><td>PyTorch's built-in upper-triangular mask</td></tr>
+    <tr><td><strong>Output</strong></td><td>MIDI files only</td><td>MIDI + piano rolls + attention maps + loss curves + note distributions</td></tr>
+</table>
+
+<h3>Impact of Differences</h3>
+<ul>
+    <li><strong>More training data (36 vs 6 files):</strong> The model sees more varied Bach compositions, leading to a richer vocabulary and more diverse generation patterns.</li>
+    <li><strong>Fewer epochs (200 vs 5000):</strong> With more data and PyTorch's efficient training, fewer epochs suffice. The model converges faster per epoch with more sequences.</li>
+    <li><strong>Temperature comparison:</strong> Multiple temperature outputs let us directly observe the diversity-coherence tradeoff.</li>
+    <li><strong>4 vs 5 attention heads:</strong> Minimal impact on quality — the key factor is total embedding dimension, which remains 256.</li>
+</ul>
+
+<h2>8. How to Run</h2>
+<pre>
+cd "Week 6/Assignment 9"
+source ../../venv/bin/activate
+python Assignment9_MusicTransformer.py
+</pre>
+
+<h2>9. References</h2>
+<ul>
+    <li>Vaswani, A., et al. (2017). <em>Attention Is All You Need.</em> NeurIPS 2017.</li>
+    <li>Foster, D. (2023). <em>Generative Deep Learning, 2nd Edition.</em> O'Reilly Media. Chapter 11.</li>
+    <li>Reference code: <a href="https://github.com/davidADSP/Generative_Deep_Learning_2nd_Edition/blob/main/notebooks/11_music/01_transformer/transformer.ipynb">transformer.ipynb</a></li>
+</ul>
+
+</body>
+</html>
